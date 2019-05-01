@@ -68,8 +68,9 @@ extension LoginandRegisterViewController{
     func storeStudent(completion: (_ done:Bool) ->()) {
         let check = findStudent()
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        if (passwordTextField.text == confirmPasswordTextField.text && check == cases.notRegistered.hashValue && emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false && nameTextField.text?.isEmpty == false)
+        if (passwordTextField.text == confirmPasswordTextField.text && (check == cases.notRegistered.hashValue || check == 0) && emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false && nameTextField.text?.isEmpty == false)
         {
+           
             let student =  Student(context: managedContext)
             student.email = emailTextField.text
             student.password = passwordTextField.text
@@ -162,5 +163,6 @@ extension LoginandRegisterViewController{
             }
         }
          return result
+        
     }
 }
