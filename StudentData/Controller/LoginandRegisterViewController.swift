@@ -11,6 +11,7 @@ enum cases{
 class LoginandRegisterViewController: UIViewController {
     
     var studentsList = [Student]()
+    var check = 0
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -18,11 +19,18 @@ class LoginandRegisterViewController: UIViewController {
     @IBOutlet weak var confirmPasswordLabel: UILabel!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var nameTextField: UITextField!
-    
     @IBOutlet weak var Login: UIButton!
     @IBOutlet weak var Register: UIButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchStudents()
+        loadSession()
+         if(emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false){
+        check = findStudent()
+        login()
+        }
+    }
     
     @IBAction func SaveStudent(_ sender: UIButton) {
         storeStudent{
@@ -35,57 +43,36 @@ class LoginandRegisterViewController: UIViewController {
                 //Try to save again using new data
             }
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        fetchStudents()
+        
     }
 
     @IBAction func Login(_ sender: UIButton) {
-        let check = findStudent()
-        if (check == cases.success.hashValue){
-                self.performSegue(withIdentifier: "studentlistPage", sender: self)
-            }
-        else if(check == cases.incorrectPassword.hashValue){
-            Toast.show(message:"Your password is not correct! Please try again",controller: self)
-        }
-        else{
-            Toast.show(message:"Your email has not been registered! Please register!",controller: self)
-                Register.isEnabled = true
-                confirmPasswordLabel.isHidden = false
-                confirmPasswordTextField.isHidden = false
-                nameLabel.isHidden = false
-                nameTextField.isHidden = false
-                Toast.show(message:"Your email has not been registered! Please register!",controller: self)
-                Login.isEnabled = false
-            }
-        }
-    
+       saveSession()
+       login()
+    }
 }
 
 extension LoginandRegisterViewController{
     func storeStudent(completion: (_ done:Bool) ->()) {
         let check = findStudent()
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        if (passwordTextField.text == confirmPasswordTextField.text && (check == cases.notRegistered.hashValue || check == 0) && emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false && nameTextField.text?.isEmpty == false)
+        if (passwordTextField.text == confirmPasswordTextField.text && (check == cases.notRegistered.hashValue || check == 0) && emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false)
         {
            
             let student =  Student(context: managedContext)
-            student.email = emailTextField.text
+            student.username = emailTextField.text
             student.password = passwordTextField.text
-            student.name = nameTextField.text
+            student.score = 0
             do{
                 try managedContext.save()
                 Toast.show(message:"Your email has been registered!",controller: self)
                 completion(true)
                 confirmPasswordLabel.isHidden = true
                 confirmPasswordTextField.isHidden = true
-                nameLabel.isHidden = true
-                nameTextField.isHidden = true
                 Register.isEnabled = false
                 Login.isEnabled = true
-                self.performSegue(withIdentifier: "studentlistPage", sender: self)
+                self.performSegue(withIdentifier: "mainpage", sender: self)
+                saveSession()
             } catch{
                 print("Failed to save student: ", error.localizedDescription)
                 completion(false)
@@ -98,7 +85,7 @@ extension LoginandRegisterViewController{
         else if (passwordTextField.text != confirmPasswordTextField.text && check == cases.notRegistered.hashValue){
             Toast.show(message:"Your password and confirm password are not matched!",controller: self)
         }
-        else if (emailTextField.text!.isEmpty || (passwordTextField.text?.isEmpty)! || (nameTextField.text?.isEmpty)!)
+        else if (emailTextField.text!.isEmpty || (passwordTextField.text?.isEmpty)!)
         {
             Toast.show(message:"No field should be null!",controller: self)
         }
@@ -140,22 +127,21 @@ extension LoginandRegisterViewController{
         var result = 0
         for loginstudent in studentsList
         {
-            if (emailTextField.text == loginstudent.email && passwordTextField.text == loginstudent.password){
+            if (emailTextField.text == loginstudent.username && passwordTextField.text == loginstudent.password){
                 result = cases.success.hashValue
                 break
             }
-            else if (emailTextField.text == loginstudent.email && passwordTextField.text != loginstudent.password)
+            else if (emailTextField.text == loginstudent.username && passwordTextField.text != loginstudent.password)
             {
                 result = cases.incorrectPassword.hashValue
                 break
             
             }
                 
-            else if (emailTextField.text == loginstudent.email && passwordTextField.text != confirmPasswordTextField.text)
+            else if (emailTextField.text == loginstudent.username && passwordTextField.text != confirmPasswordTextField.text)
             {
                 result = cases.duplicatedEmail.hashValue
                 break
-                
             }
                 
             else{
@@ -164,5 +150,44 @@ extension LoginandRegisterViewController{
         }
          return result
         
+    }
+}
+
+//save stave
+extension LoginandRegisterViewController{
+    func saveSession(){
+        UserDefaults.standard.set(emailTextField.text, forKey: "username")
+        UserDefaults.standard.set(passwordTextField.text, forKey: "password")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func loadSession(){
+        if (UserDefaults.standard.string(forKey: "username") != "") {
+            emailTextField.text = UserDefaults.standard.string(forKey: "username")
+            passwordTextField.text = UserDefaults.standard.string(forKey: "password")
+        }
+        else{
+            emailTextField.text = ""
+            passwordTextField.text = ""
+        }
+    }
+    
+    func login(){
+        check = findStudent()
+        if (check == cases.success.hashValue){
+            self.performSegue(withIdentifier: "mainpage", sender: self)
+            saveSession()
+        }
+        else if(check == cases.incorrectPassword.hashValue){
+            Toast.show(message:"Your password is not correct! Please try again",controller: self)
+        }
+        else{
+            Toast.show(message:"Your email has not been registered! Please register!",controller: self)
+            Register.isEnabled = true
+            confirmPasswordLabel.isHidden = false
+            confirmPasswordTextField.isHidden = false
+            Toast.show(message:"Your email has not been registered! Please register!",controller: self)
+            Login.isEnabled = false
+        }
     }
 }

@@ -2,7 +2,7 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
 
-    @IBOutlet weak var studentName: UILabel!
+    @IBOutlet weak var QuestionContent: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

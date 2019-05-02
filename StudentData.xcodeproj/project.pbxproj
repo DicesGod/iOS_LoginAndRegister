@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021F89E92279D1E8001D3CCD /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021F89E82279D1E8001D3CCD /* MainPageViewController.swift */; };
+		021F89ED2279D68F001D3CCD /* SaveStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021F89EC2279D68F001D3CCD /* SaveStatus.swift */; };
 		02B615512254DCDB0055445D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B615502254DCDB0055445D /* AppDelegate.swift */; };
 		02B615532254DCDB0055445D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B615522254DCDB0055445D /* ViewController.swift */; };
 		02B615562254DCDB0055445D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02B615542254DCDB0055445D /* Main.storyboard */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		021F89E82279D1E8001D3CCD /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
+		021F89EC2279D68F001D3CCD /* SaveStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStatus.swift; sourceTree = "<group>"; };
 		02B6154D2254DCDB0055445D /* StudentData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudentData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02B615502254DCDB0055445D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02B615522254DCDB0055445D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 				02B615522254DCDB0055445D /* ViewController.swift */,
 				ACF8360622776BE900CCD00A /* LoginandRegisterViewController.swift */,
 				AC16E163227794B9006E6455 /* Toast.swift */,
+				021F89E82279D1E8001D3CCD /* MainPageViewController.swift */,
+				021F89EC2279D68F001D3CCD /* SaveStatus.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -164,10 +170,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				02B6156A2254EAC90055445D /* TableViewCell.swift in Sources */,
+				021F89E92279D1E8001D3CCD /* MainPageViewController.swift in Sources */,
 				AC16E164227794B9006E6455 /* Toast.swift in Sources */,
 				ACF8360722776BE900CCD00A /* LoginandRegisterViewController.swift in Sources */,
 				02B615532254DCDB0055445D /* ViewController.swift in Sources */,
 				02B615512254DCDB0055445D /* AppDelegate.swift in Sources */,
+				021F89ED2279D68F001D3CCD /* SaveStatus.swift in Sources */,
 				02B615592254DCDB0055445D /* StudentData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
